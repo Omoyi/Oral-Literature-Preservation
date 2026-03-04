@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import auca.ac.rw.literaturePreservation.domain.Location;
 import auca.ac.rw.literaturePreservation.domain.Storyteller;
 
 @Repository
@@ -12,5 +13,5 @@ public interface StorytellerRepository extends JpaRepository<Storyteller, Long> 
     
     boolean existsByEmail(String email);
 
-    List<Storyteller> findByLocation_Location_id(Long locationId);
+    List<Storyteller> findByLocation(Location location);
 }
