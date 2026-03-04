@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import auca.ac.rw.literaturePreservation.domain.*;
 import auca.ac.rw.literaturePreservation.repository.*;
-import auca.ac.rw.literaturePreservation.service.*;
 
 @Service
 public class StorytellerService {
