@@ -8,7 +8,8 @@ public class Storyteller {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long storyteller_id;
+    @Column(name = "storyteller_id")
+    private Long id;
 
     private String first_name;
     private String last_name;
@@ -24,10 +25,10 @@ public class Storyteller {
     public Storyteller() {
     }
 
-    public Long getStoryteller_id() { return storyteller_id; }
+    public Long getId() { return id; }
 
-    public void setStoryteller_id(Long storyteller_id) { this.storyteller_id = storyteller_id; }
-    
+    public void setId(Long id) { this.id = id; }
+
     public String getFirst_name() { return first_name; }
     
     public void setFirst_name(String first_name) { this.first_name = first_name; }

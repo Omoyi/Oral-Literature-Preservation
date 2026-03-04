@@ -1,5 +1,7 @@
 package auca.ac.rw.literaturePreservation.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 
@@ -8,9 +10,11 @@ import jakarta.persistence.*;
 public class Location {
 
     @Id
+    @Column(name = "location_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long location_id;
+    private long id;
 
+    @JsonIgnoreProperties(value = {"parent"}, allowSetters = true)
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Location parent;
@@ -26,9 +30,9 @@ public class Location {
     public Location() {
     }   
 
-    public long getLocation_Id() { return location_id;}
+    public long getId() { return id;}
 
-    public void setLocation_Id(long location_id) { this.location_id = location_id; }
+    public void setId(long id) { this.id = id; }
 
     public Location getParent() { return parent; }
 
