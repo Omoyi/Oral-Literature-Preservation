@@ -60,4 +60,9 @@ public class LiteratureController {
     public Literature getLiteratureById(@PathVariable Long id) {
         return literatureService.getLiteratureById(id);
     }
+
+    @PostMapping("/{literatureId}/add-tag/{tagId}")
+    public Literature addTagToLiterature(@PathVariable Long literatureId, @PathVariable Long tagId) {
+        return literatureService.addTagToLiterature(literatureId, tagId);
+    }
 }
