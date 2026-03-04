@@ -3,7 +3,9 @@ package auca.ac.rw.literaturePreservation.service;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import auca.ac.rw.literaturePreservation.domain.*;
 import auca.ac.rw.literaturePreservation.repository.*;
@@ -17,15 +19,40 @@ public class StorytellerService {
     private LocationService locationService;
 
     public Storyteller saveStoryteller(Storyteller storyteller) {
-        if (storytellerRepository.existsByEmail(storyteller.getEmail())) {
-            throw new RuntimeException("Email already exists: " + storyteller.getEmail());
+        // if (storytellerRepository.existsByEmail(storyteller.getEmail())) {
+        //     throw new RuntimeException("Email already exists: " + storyteller.getEmail());
+        // }
+
+        // // Ensure location exists
+        // Location savedLocation = locationService.getLocationById(storyteller.getLocation().getId());
+        // storyteller.setLocation(savedLocation);
+
+        // return storytellerRepository.save(storyteller);
+
+        if (storyteller.getEmail() == null || storyteller.getEmail().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is required");
         }
 
-        // Ensure location exists
-        Location savedLocation = locationService.getLocationById(storyteller.getLocation().getLocation_Id());
+        if (storytellerRepository.existsByEmail(storyteller.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists: " + storyteller.getEmail());
+        }
+    
+        if (storyteller.getLocation() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Location id is required (use: location: {\"id\": <villageId>})");
+        }
+    
+        Location savedLocation = locationService.getLocationById(storyteller.getLocation().getId());
+    
+        if (savedLocation.getType() != ELocationType.VILLAGE) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Storyteller location must be a VILLAGE. Provided: " + savedLocation.getType()
+            );
+        }
+    
         storyteller.setLocation(savedLocation);
-
         return storytellerRepository.save(storyteller);
+
     }
 
     public Storyteller getStorytellerById(Long id) {
@@ -38,6 +65,7 @@ public class StorytellerService {
     }
 
     public List<Storyteller> getStorytellersByLocation(Long locationId) {
-        return storytellerRepository.findByLocation_Location_id(locationId);
-    }
+    Location loc = locationService.getLocationById(locationId);
+    return storytellerRepository.findByLocation(loc);
+}
 }
