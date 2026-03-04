@@ -3,7 +3,9 @@ package auca.ac.rw.literaturePreservation.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import auca.ac.rw.literaturePreservation.domain.ELocationType;
 import auca.ac.rw.literaturePreservation.domain.Location;
@@ -24,7 +26,10 @@ public class LocationService {
 
     public Location getLocationById(Long id) {
         return locationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Location not found with id: " + id));
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Location not found with id: " + id
+            ));
     }
 
     public Location getProvinceByCode(String provinceCode) {
@@ -43,7 +48,8 @@ public class LocationService {
     }
 
     public List<Location> getChildren(Long parentId) {
-        return locationRepository.findByParent_Location_id(parentId);
+        Location parent = getLocationById(parentId);
+        return locationRepository.findByParent(parent);
     }
 
     public List<Location> getAllLocations() {
