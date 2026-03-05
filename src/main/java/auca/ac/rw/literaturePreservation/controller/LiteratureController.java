@@ -1,11 +1,14 @@
 package auca.ac.rw.literaturePreservation.controller;
 
+import auca.ac.rw.literaturePreservation.domain.EGenreType;
 import auca.ac.rw.literaturePreservation.domain.Literature;
 import auca.ac.rw.literaturePreservation.service.LiteratureService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 
@@ -64,5 +67,18 @@ public class LiteratureController {
     @PostMapping("/{literatureId}/add-tag/{tagId}")
     public Literature addTagToLiterature(@PathVariable Long literatureId, @PathVariable Long tagId) {
         return literatureService.addTagToLiterature(literatureId, tagId);
+    }
+
+    @GetMapping("/by-genre/{genre}")
+    public Page<Literature> getByGenre(@PathVariable String genre, Pageable pageable) {
+        try {
+            EGenreType g = EGenreType.valueOf(genre.toUpperCase());
+            return literatureService.getLiteratureByGenre(g, pageable);
+        } catch (IllegalArgumentException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid genre: " + genre + ". Use values like: " + java.util.Arrays.toString(EGenreType.values())
+            );
+        }
     }
 }
