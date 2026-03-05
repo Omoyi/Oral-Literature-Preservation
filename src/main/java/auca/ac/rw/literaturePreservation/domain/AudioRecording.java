@@ -15,9 +15,9 @@ public class AudioRecording {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fileUrl;     // or filePath
-    private String format;      // mp3, wav
-    private Integer durationSeconds;
+    private String fileUrl;
+    private String format;   
+    private Integer durationSeconds; 
 
     @OneToOne
     @JoinColumn(name = "literature_id", unique = true, nullable = false)
