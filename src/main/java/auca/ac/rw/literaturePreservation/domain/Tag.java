@@ -23,6 +23,7 @@ public class Tag {
     @Column(unique = true, nullable = false)
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     private Set<Literature> literature = new HashSet<>();
 
@@ -36,8 +37,6 @@ public class Tag {
 
     public void setName(String name) { this.name = name; }
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "tags")
     public Set<Literature> getLiterature() { return literature; }
 
     public void setLiterature(Set<Literature> literature) { this.literature = literature; }
