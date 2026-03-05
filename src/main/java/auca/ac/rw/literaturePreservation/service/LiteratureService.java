@@ -1,5 +1,6 @@
 package auca.ac.rw.literaturePreservation.service;
 
+import auca.ac.rw.literaturePreservation.domain.EGenreType;
 import auca.ac.rw.literaturePreservation.domain.Literature;
 import auca.ac.rw.literaturePreservation.domain.Storyteller;
 import auca.ac.rw.literaturePreservation.domain.Tag;
@@ -77,5 +78,9 @@ public class LiteratureService {
         literature.getTags().add(tag);
     
         return literatureRepository.save(literature);
+    }
+
+    public Page<Literature> getLiteratureByGenre(EGenreType genre, Pageable pageable) {
+        return literatureRepository.findByGenre(genre, pageable);
     }
 }
