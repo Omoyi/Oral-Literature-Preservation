@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import auca.ac.rw.literaturePreservation.domain.EGenreType;
 import auca.ac.rw.literaturePreservation.domain.Literature;
 
 @Repository
@@ -17,4 +18,6 @@ public interface LiteratureRepository extends JpaRepository<Literature, Long> {
     Page<Literature> findByStorytellerId(Long storytellerId, Pageable pageable);
 
     boolean existsByTitle(String title);
+
+    Page<Literature> findByGenre(EGenreType genre, Pageable pageable);
 }
