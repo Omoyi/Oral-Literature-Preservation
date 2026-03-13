@@ -1,5 +1,6 @@
 package auca.ac.rw.literaturePreservation.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,19 @@ public class LocationService {
 
     public List<Location> getAllLocations() {
         return locationRepository.findAll();
+    }
+
+    public List<Location> getAllDescendants(Location parent) {
+        List<Location> all = new ArrayList<>();
+        collectDescendants(parent, all);
+        return all;
+    }
+
+    private void collectDescendants(Location parent, List<Location> all) {
+        List<Location> children = locationRepository.findByParent(parent);
+        for (Location child : children) {
+            all.add(child);
+            collectDescendants(child, all);
+        }
     }
 }

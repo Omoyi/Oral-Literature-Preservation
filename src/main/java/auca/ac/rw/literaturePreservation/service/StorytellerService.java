@@ -65,7 +65,35 @@ public class StorytellerService {
     }
 
     public List<Storyteller> getStorytellersByLocation(Long locationId) {
-    Location loc = locationService.getLocationById(locationId);
-    return storytellerRepository.findByLocation(loc);
-}
+        Location loc = locationService.getLocationById(locationId);
+        return storytellerRepository.findByLocation(loc);
+    }
+
+    public List<Storyteller> getStorytellersByProvinceCode(String provinceCode) {
+        Location province = locationService.getProvinceByCode(provinceCode);
+    
+        if (province.getType() != ELocationType.PROVINCE) {
+            throw new RuntimeException("Provided code does not belong to a province");
+        }
+    
+        List<Location> provinceLocations = new ArrayList<>();
+        provinceLocations.add(province);
+        provinceLocations.addAll(locationService.getAllDescendants(province));
+    
+        return storytellerRepository.findByLocationIn(provinceLocations);
+    }
+    
+    public List<Storyteller> getStorytellersByProvinceName(String provinceName) {
+        Location province = locationService.getProvinceByName(provinceName);
+    
+        if (province.getType() != ELocationType.PROVINCE) {
+            throw new RuntimeException("Provided name does not belong to a province");
+        }
+    
+        List<Location> provinceLocations = new ArrayList<>();
+        provinceLocations.add(province);
+        provinceLocations.addAll(locationService.getAllDescendants(province));
+    
+        return storytellerRepository.findByLocationIn(provinceLocations);
+    }
 }

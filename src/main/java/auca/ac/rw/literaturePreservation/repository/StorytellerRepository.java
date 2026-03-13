@@ -14,4 +14,6 @@ public interface StorytellerRepository extends JpaRepository<Storyteller, Long> 
     boolean existsByEmail(String email);
 
     List<Storyteller> findByLocation(Location location);
+
+    List<Storyteller> findByLocationIn(List<Location> locations);
 }

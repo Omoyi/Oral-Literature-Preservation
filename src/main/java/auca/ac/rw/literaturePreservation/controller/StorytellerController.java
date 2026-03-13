@@ -34,4 +34,14 @@ public class StorytellerController {
     public Storyteller getStorytellerById(@PathVariable Long id) {
         return storytellerService.getStorytellerById(id);
     }
+
+    @GetMapping("/by-province/code/{code}")
+    public List<Storyteller> getByProvinceCode(@PathVariable String code) {
+        return storytellerService.getStorytellersByProvinceCode(code);
+    }
+    
+    @GetMapping("/by-province/name/{name}")
+    public List<Storyteller> getByProvinceName(@PathVariable String name) {
+        return storytellerService.getStorytellersByProvinceName(name);
+    }
 }
